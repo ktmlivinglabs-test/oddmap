@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.css" />
+<!--[if lte IE 8]>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.ie.css" />
+<![endif]-->
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet-src.js"></script>
+         <script type="text/javascript" src="heatmap.js"></script>
+        <script type="text/javascript" src="heatmap-leaflet.js"></script>
+       
+        
+         <style>
+            #map{width:1000px;height:1000px;}
+        </style>
+  </head>
+  <body>
+    <div id='map'></div>
+    <script type="text/javascript" charset="utf-8">
+            var heatmapLayer = L.TileLayer.heatMap({
+                    radius: 5,
+                    opacity: 60,
+                    gradient: {
+                        0.45: "rgb(255,255,100)",
+                        0.55: "rgb(0,255,255)",
+                        0.65: "rgb(0,255,0)",
+                        0.95: "yellow",
+                        1.0: "rgb(255,0,0)"
+                    }
+                });
+            var allDatesData = (function () {
+                var allDatesData = null;
+                $.ajax({
+                    'async': false,
+                    'global': false,
+                    'url': "odd_nodes.geojson",
+                    'dataType': "json",
+                    'success': function (data) {
+                        allDatesData = data;
+                    }
+                });
+                return allDatesData;
+            })();
+            //initialize an array which would contain the coordinates
+            var testData={}
+            var data = [];
+            testData.max = 10;
+            $.each(allDatesData.features,function(index,value){
+                var obj = {};
+                // debugger;
+                var latlng = new L.latLng(value.geometry.coordinates);
+                // heatmap.store.addDataPoint(new L.latLng(value.geometry.coordinates));
+                obj.lat = latlng.lng;
+                obj.lon = latlng.lat;
+                obj.value = 1;
+                // console.log(heatmapLayer);
+                // heatmapLayer.store.addDataPoint(obj.lon,obj.lat);
+                // debugger;
+                data.push(obj);
+                
+            });
+            testData.data = data;
+            console.log(testData);
+            
+            var map = new L.Map('map', {
+                center: new L.LatLng(28.425,84.435),
+                zoom: 7,
+                layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.hc1eo89i/{z}/{x}/{y}.png')
+            });
+            
+
+            
+ 
+            heatmapLayer.addData(testData.data);
+            
+            heatmapLayer.addTo(map);
+            
+            var overlayMaps = {
+                'Heatmap': heatmapLayer
+            };
+
+            var controls = L.control.layers(null, overlayMaps, {collapsed: false});
+
+            controls.addTo(map);
+
+
+            // var baseLayer = L.tileLayer(
+            //     'http://{s}.tile.cloudmade.com/ad132e106cd246ec961bbdfbe0228fe8/997/256/{z}/{x}/{y}.png',{
+            //         attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="hanonymousttp://cloudmade.com">CloudMade</a>',
+            //         maxZoom: 18
+            //     }
+            // );
+
+
+        
+    </script>
+  </body>
+</html>
