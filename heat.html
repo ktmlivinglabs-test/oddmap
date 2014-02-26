@@ -65,10 +65,13 @@
             console.log(testData);
             
             var map = new L.Map('map', {
-                center: new L.LatLng(25.900,85.035),
+                center: new L.LatLng(25.7400,85.235),
                 zoom: 7,
-                layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.hc1eo89i/{z}/{x}/{y}.png')
+                layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.hc1eo89i/{z}/{x}/{y}.png',{
+                    attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http:mapbox.com">mapbox</a>'
+                })
             });
+
             
 
             
