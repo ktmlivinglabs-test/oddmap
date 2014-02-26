@@ -29,6 +29,7 @@
                         1.0: "rgb(255,0,0)"
                     }
                 });
+            
             var allDatesData = (function () {
                 var allDatesData = null;
                 $.ajax({
@@ -64,7 +65,7 @@
             console.log(testData);
             
             var map = new L.Map('map', {
-                center: new L.LatLng(26.425,84.435),
+                center: new L.LatLng(26.225,84.635),
                 zoom: 7,
                 layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.hc1eo89i/{z}/{x}/{y}.png')
             });
